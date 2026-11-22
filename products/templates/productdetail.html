@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="card mt-4" style="max-width: 500px; margin: auto;">
+
+    {% if product.image %}
+        <img src="{{ product.image.url }}" class="card-img-top" height="250">
+    {% endif %}
+
+    <div class="card-body text-center">
+        <h3 class="card-title">{{ product.name }}</h3>
+
+        <p class="card-text">
+            <b>Price:</b> ₹ {{ product.price }}
+        </p>
+
+        <p class="card-text">
+            <b>Description:</b><br>
+            {{ product.description }}
+        </p>
+
+        <a href="{% url 'productlist' %}" class="btn btn-secondary btn-sm">Back to Product List</a>
+        <a href="{% url 'home' %}" class="btn btn-primary btn-sm">Home</a>
+    </div>
+
+</div>
+
+{% endblock %}

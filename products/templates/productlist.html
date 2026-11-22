@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!--  PAGE BACKGROUND -->
+<div style="
+    background: linear-gradient(135deg, #fff5ec 0%, #fdecea 100%);
+    padding: 20px;
+    border-radius: 10px;
+">
+ 
+<h1>Product List</h1>
+<div class="align-middle p-3 d-flex justify-content-start">
+<a href="{% url 'home' %}" class="btn btn-primary me-2">Home</a>
+<a href="{% url 'cart' %}" class="btn btn-dark">🛒 Cart</a>
+{% comment %} <a href="/addproduct/" class="btn btn-success">Add Product</a> {% endcomment %}
+</div>
+<!-- SEARCH + CATEGORY FILTER -->s
+<form method="GET" class="mb-4">
+    <div class="row">
+        <div class="col-md-6">
+            <input
+                type="text"
+                name="q"
+                class="form-control"
+                placeholder="Search product..."
+                value="{{ request.GET.q }}">
+        </div>
+
+        <div class="col-md-4">
+            <select name="category" class="form-control">
+                <option value="">All Categories</option>
+                {% for c in categories %}
+                    <option value="{{ c.id }}"
+                        {% if request.GET.category == c.id|stringformat:"s" %}selected{% endif %}>
+                        {{ c.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">Filter</button>
+        </div>
+    </div>
+</form>
+
+<!-- ✅ PRODUCT CARDS -->
+<div class="row">
+
+{% for p in products %}
+<div class="col-md-4 mb-4">
+
+    <!-- ✅ CARD COLOR + SHADOW -->
+    <div class="card h-100 shadow-sm" style="background-color:#ffffff;">
+
+        {% if p.image %}
+            <img src="{{ p.image.url }}"
+                 class="card-img-top"
+                 style="height:200px; object-fit:contain;">
+        {% endif %}
+
+        <div class="card-body">
+            <h5 class="card-title">{{ p.name }}</h5>
+            <p class="text-danger fw-bold">₹ {{ p.price }}</p>
+            <p class="text-muted">{{ p.description }}</p>
+        </div>
+
+        <div class="card-footer text-center bg-white">
+
+            <a href="{% url 'productdetail' p.id %}" class="btn btn-info btn-sm">View</a>
+            <a href="{% url 'editproduct' p.id %}" class="btn btn-warning btn-sm">Edit</a>
+            <a href="{% url 'deleteproduct' p.id %}" class="btn btn-danger btn-sm">Delete</a>
+
+            {% if user.is_authenticated %}
+                <br>
+                <a href="{% url 'add_to_cart' p.id %}"
+                   class="btn btn-success btn-sm mt-2">
+                    Add to Cart
+                </a>
+            {% else %}
+                <br>
+                <a href="{% url 'login' %}" class="btn btn-secondary btn-sm mt-2">
+                    Login to Buy
+                </a>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% empty %}
+    <p>No products found.</p>
+{% endfor %}
+
+</div>
+</div>
+
+{% endblock %}

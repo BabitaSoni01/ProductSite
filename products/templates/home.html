@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- HOME GRADIENT SECTION -->
+<div
+    class="d-flex justify-content-center align-items-center text-center"
+    style="
+        height: 70vh;
+        background: linear-gradient(135deg, #ff4b2b 0%, #fff5ec 100%);
+        border-radius: 12px;
+    "
+>
+    <div>
+
+        {% if user.is_authenticated %}
+            <h1 class="fw-bold text-dark mb-3">
+                Welcome, {{ user.username }} 👋
+            </h1> 
+        {% else %}
+            <h1 class="fw-bold text-dark mb-3">
+                Welcome to Product Management App 👋
+            </h1>
+        {% endif %}
+
+        <p class="fs-5 text-muted mb-4">
+            Discover amazing products with best deals
+        </p>
+        
+        {% if user.is_authenticated %}
+            <!-- PRODUCT SITE BUTTON -->
+            <a href="{% url 'productlist' %}" class="btn btn-danger btn-lg px-5">
+                Product Site
+            </a>
+        {% else %}
+            
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% comment %} {% extends 'base.html' %}
+
+{% block content %}
+<h1>Welcome to Product Management App</h1>
+
+<h2>All Products</h2>
+
+{% for p in products %}
+    <p>{{ p.name }} - ₹{{ p.price }}</p>
+{% empty %}
+    <p>No products found.</p>
+{% endfor %}
+
+{% endblock %} {% endcomment %}
+
+
